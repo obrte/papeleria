@@ -37,59 +37,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <tr v-for="categoria in categorias" :key="categoria.id">
                                 <td>
                                     <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modalNuevo">		<i class="icon-pencil"></i>		</button> &nbsp;
                                     <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalEliminar">		<i class="icon-trash"></i>		</button>
                                 </td>
-                                <td>Equipos</td>
-                                <td>Dispositivos electrónicos</td>
+                                <td v-text="categoria.nombre"></td>
+                                <td v-text="categoria.descripcion"></td>
                                 <td>
-                                    <span class="badge badge-success">Activo</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modalNuevo">		<i class="icon-pencil"></i>		</button> &nbsp;
-                                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalEliminar">		<i class="icon-trash"></i>		</button>
-                                </td>
-                                <td>Equipos</td>
-                                <td>Dispositivos electrónicos</td>
-                                <td>
-                                    <span class="badge badge-success">Activo</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modalNuevo">		<i class="icon-pencil"></i>		</button> &nbsp;
-                                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalEliminar">		<i class="icon-trash"></i>		</button>
-                                </td>
-                                <td>Equipos</td>
-                                <td>Dispositivos electrónicos</td>
-                                <td>
-                                    <span class="badge badge-secondary">Inactivo</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modalNuevo">		<i class="icon-pencil"></i>		</button> &nbsp;
-                                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalEliminar">		<i class="icon-trash"></i>		</button>
-                                </td>
-                                <td>Equipos</td>
-                                <td>Dispositivos electrónicos</td>
-                                <td>
-                                    <span class="badge badge-secondary">Inactivo</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modalNuevo">		<i class="icon-pencil"></i>		</button>&nbsp;
-                                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalEliminar">		<i class="icon-trash"></i>		</button>
-                                </td>
-                                <td>Equipos</td>
-                                <td>Dispositivos electrónicos</td>
-                                <td>
-                                    <span class="badge badge-success">Activo</span>
+                                    <div v-if="categoria.condicion">
+                                        <span class="badge badge-success">Activo</span>
+                                    </div>
+                                    <div v-else>
+                                        <span class="badge badge-danger">Inactivo</span>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -184,8 +145,25 @@
 
 <script>
 export default {
+  data() {
+    return {
+      nombre: "",
+      descripcion: "",
+      categorias: []
+    };
+  },
+  methods: {
+    listaCategoria() {
+      axios
+        .get("/categoria")
+        .then(res => {
+          this.categorias = res.data;
+        })
+        .catch(err => console.log(err));
+    }
+  },
   mounted() {
-    console.log("Component mounted.");
+    this.listaCategoria();
   }
 };
 </script>
